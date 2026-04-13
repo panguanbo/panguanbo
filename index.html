@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<title>panguanbo.space</title>
+
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background: #0f172a;
+        color: #e2e8f0;
+        text-align: center;
+        padding: 40px;
+    }
+
+    h1 {
+        font-size: 36px;
+        margin-bottom: 10px;
+    }
+
+    .card {
+        background: #1e293b;
+        padding: 20px;
+        margin: 20px auto;
+        border-radius: 12px;
+        max-width: 500px;
+        box-shadow: 0 0 15px rgba(0,0,0,0.3);
+    }
+
+    button {
+        padding: 10px 20px;
+        border: none;
+        border-radius: 8px;
+        background: #38bdf8;
+        color: #0f172a;
+        cursor: pointer;
+        font-size: 16px;
+    }
+
+    button:hover {
+        background: #0ea5e9;
+    }
+</style>
+</head>
+
+<body>
+
+<h1>🌐 欢迎来到我的第一个网站</h1>
+<p>域名：panguanbo.space</p>
+
+<div class="card">
+    <p>📅 当前时间：<span id="date"></span></p>
+    <p>🌍 你的IP：<span id="ip">加载中...</span></p>
+    <p>📍 所在地区：<span id="location">加载中...</span></p>
+    <p>🌦️ 当前天气：<span id="weather">加载中...</span></p>
+</div>
+
+<div class="card">
+    <button onclick="refreshData()">🔄 刷新信息</button>
+</div>
+
+<div class="card">
+    <p>👀 网站访问次数（免费统计）</p>
+    <p><span id="busuanzi_value_site_pv">加载中...</span></p>
+</div>
+
+<!-- 时间 -->
+<script>
+function updateTime() {
+    const now = new Date();
+    document.getElementById("date").innerText = now.toLocaleString();
+}
+setInterval(updateTime, 1000);
+updateTime();
+</script>
+
+<!-- IP + 地区 -->
+<script>
+function loadIP() {
+    fetch('https://ipapi.co/json/')
+    .then(res => res.json())
+    .then(data => {
+        document.getElementById("ip").innerText = data.ip;
+        document.getElementById("location").innerText =
+            data.city + ", " + data.country_name;
+        
+        loadWeather(data.city);
+    });
+}
+</script>
+
+<!-- 天气（使用 wttr.in，无需API key） -->
+<script>
+function loadWeather(city) {
+    fetch(`https://wttr.in/${city}?format=3`)
+    .then(res => res.text())
+    .then(data => {
+        document.getElementById("weather").innerText = data;
+    });
+}
+</script>
+
+<script>
+function refreshData() {
+    loadIP();
+}
+loadIP();
+</script>
+
+<!-- 访问统计（免费） -->
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+</body>
+</html>
